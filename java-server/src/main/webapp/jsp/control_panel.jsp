@@ -9,17 +9,27 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" href="${cssDir}/bootstrap.min.css">
-    <link rel="stylesheet" href="${cssDir}/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="${cssDir}/jug-arduino.css">
 <title>JUG Arduino Control Panel</title>
 </head>
 <body>
+<div id="mainContent" class="buffered-frame">
     <h1>Arduino Control Panel</h1>
+    <p>
+        <%-- TODO: Bootstrap for alignment --%>
+        <label for="arduinoBoardIP">Arduino Board IP Address:</label>
+        <input type="text" name="arduinoBoardIP" id="arduinoBoardIP" />
+        <br />
+        <label for="arduinoBoardPort">Arduino Board Port:</label>
+        <input type="text" name="arduinoBoardPort" id="arduinoBoardPort" />
+    </p>
+    
+    <hr size="5" />
     
     <h2>Light Emiting Diode (LED) Controller</h2>
     <fieldset>
-        <p>The checkboxes below each correspond to a LED on the Arduino board.  Check and uncheck them to see the LEDs light up or go dark.</p>
-        <c:forEach begin="1" end="4" var="ledIdx">
+        <legend>The checkboxes below each correspond to a LED on the Arduino board.  Check and uncheck them to see the LEDs light up or go dark.</legend>
+        <c:forEach begin="0" end="3" var="ledIdx">
             <label for="led${ledIdx}"></labeL><input type="checkbox" name="led${ledIdx}" id="led${ledIdx}" title="LED ${ledIdx}" value="led${ledIdx}" class="ledCheckbox"></input> LED ${ledIdx}</label>
             <br />
         </c:forEach>
@@ -27,7 +37,8 @@
     
     <h2>Temperature Sensor</h2>
     <p>Display the current temperature that the temperature sensor attached to the Arduino is detecting.  Click the button to get a new reading in real time.</p>
-    
+</div>
+
     <script type="text/javascript">
         var arduino = arduino || {};
         (function(mod) {
@@ -35,7 +46,6 @@
         })(arduino);
     </script>
     <script type="text/javascript" src="${scriptDir}/jquery.min.js"></script>
-    <script type="text/javascript" src="${scriptDir}/bootstrap.min.js"></script>
     <script type="text/javascript" src="${scriptDir}/led.js"></script>
 </body>
 </html>

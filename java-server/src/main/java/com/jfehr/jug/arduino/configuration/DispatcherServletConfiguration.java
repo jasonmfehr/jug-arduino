@@ -30,18 +30,6 @@ public class DispatcherServletConfiguration extends WebMvcConfigurerAdapter {
 		registry.addResourceHandler("/static/**").addResourceLocations("/static-content/");
 	}
 	
-	/*
-	@Bean
-	public ViewResolver buildJSPViewResolver() {
-		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		
-		resolver.setPrefix("/jsp/");
-		resolver.setSuffix(".jsp");
-		
-		return resolver;
-	}
-	*/
-	
 	@Override
 	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
 		configurer.defaultContentType(MediaType.TEXT_HTML);
