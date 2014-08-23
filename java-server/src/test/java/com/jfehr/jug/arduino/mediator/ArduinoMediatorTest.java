@@ -36,11 +36,14 @@ public class ArduinoMediatorTest {
 		
 		status.setLedNumber(Integer.valueOf(1));
 		status.setLedOn(Boolean.TRUE);
+		status.setArduinoIP(TEST_IP);
+		status.setArduinoPort(TEST_ARDUINO_PORT);
 		when(mockSocketFactory.buildSocket(TEST_IP, TEST_ARDUINO_PORT)).thenReturn(mockSocket);
 		when(mockSocket.getOutputStream()).thenReturn(mockOutputStream);
 		
-		fixture.setLed(status, TEST_IP, TEST_ARDUINO_PORT);
+		fixture.setLed(status);
 		
+		verify(mockSocketFactory).buildSocket(TEST_IP, TEST_ARDUINO_PORT);
 		verify(mockOutputStream, times(5)).write(writtenBytesCaptor.capture());
 		
 		assertEquals((int)ArduinoCommandEnum.SET_LED.getCommandNumber().byteValue(), writtenBytesCaptor.getAllValues().get(0).byteValue());
