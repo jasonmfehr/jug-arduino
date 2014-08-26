@@ -13,4 +13,5 @@ This table lists all available commands and what each data byte contains.
 
 Description | Command Byte 1 | Data Byte 2 | Data Byte 3 | Data Byte 4 | Data Byte 5
 ----------- | -------------- | ----------- | ----------- | ----------- |------------
+Echo received data bytes back to client | 0 | anything | anything | not used | not used
 Turn on/off LED | 1 | LED Number | 1 - indicates to turn LED on <br /> 0 - indicates to turn LED off | not used | not used
