@@ -1,6 +1,8 @@
 package com.jfehr.jug.arduino.mediator;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
@@ -22,9 +24,8 @@ public class RemoteBoardMediator implements IMediator {
 	@Override
 	public List<Byte> executeCommand(RemoteBoardCommandTO commandTO) {
 		Socket remoteBoardSocket = null;
-		List<Byte> receivedBytes = new LinkedList<Byte>();
-		int in;
 		
+		//ensure the provided number of data bytes equals what is expected for the provided command
 		if(commandTO.getDataBytes().size() < commandTO.getCommand().getNumberOfDataBytes()){
 			throw new MissingInputDataException(commandTO.getCommand(), commandTO.getDataBytes());
 		}
@@ -33,33 +34,8 @@ public class RemoteBoardMediator implements IMediator {
 			LOGGER.debug("attempting to open connection with remote board at address [{}:{}]", commandTO.getRemoteIP(), commandTO.getRemotePort());
 			remoteBoardSocket = socketFactory.buildSocket(commandTO.getRemoteIP(), commandTO.getRemotePort());
 			
-			LOGGER.debug("writing command byte [{}]", commandTO.getCommand().getCommandNumber());
-			remoteBoardSocket.getOutputStream().write(commandTO.getCommand().getCommandNumber().byteValue());
-			
-			for(Byte b : commandTO.getDataBytes()){
-				LOGGER.debug("writing data byte [{}]", b);
-				remoteBoardSocket.getOutputStream().write(b.byteValue());
-			}
-			
-			//wait for reply from arudino
-			if(commandTO.getCommand().getNumberOfResponseBytes() > 0){
-				LOGGER.debug("listening for reply from remote board, waiting on [{}] number of bytes", commandTO.getCommand().getNumberOfResponseBytes());
-				remoteBoardSocket.setSoTimeout(10000);
-				while(receivedBytes.size() < commandTO.getCommand().getNumberOfResponseBytes() && (in = remoteBoardSocket.getInputStream().read()) != -1){
-					LOGGER.debug("received byte [{}]", in);
-					receivedBytes.add(Byte.valueOf((byte)in));
-				}
-				
-				LOGGER.debug("received [{}] bytes: {}", receivedBytes.size(), receivedBytes);
-				
-				if(!Integer.valueOf(receivedBytes.size()).equals(commandTO.getCommand().getNumberOfResponseBytes())){
-					throw new MissingResponseDataException(commandTO.getCommand(), receivedBytes);
-				}
-			}else{
-				LOGGER.debug("not listening for reply from remote board as 0 response data bytes are expected");
-			}
-			
-			return receivedBytes;
+			this.writeCommandAndDataBytes(remoteBoardSocket.getOutputStream(), commandTO);
+			return this.readResponse(remoteBoardSocket.getInputStream(), commandTO);
 		}catch(UnknownHostException e){
 			LOGGER.error("exception communicating with remote board", e);
 			throw new RemoteBoardMediatorException(e);
@@ -79,7 +55,44 @@ public class RemoteBoardMediator implements IMediator {
 				}
 			}
 		}
+	}
+	
+	private void writeCommandAndDataBytes(OutputStream outStream, RemoteBoardCommandTO command) throws IOException {
+		LOGGER.debug("writing command byte [{}]", command.getCommand().getCommandNumber());
+		outStream.write(command.getCommand().getCommandNumber().byteValue());
 		
+		for(Byte b : command.getDataBytes()){
+			LOGGER.debug("writing data byte [{}]", b);
+			outStream.write(b.byteValue());
+		}
+	}
+	
+	private List<Byte> readResponse(InputStream inStream, RemoteBoardCommandTO commandTO) throws IOException {
+		final Integer expectedResponseBytesCount = commandTO.getCommand().getNumberOfResponseBytes();
+		List<Byte> receivedBytes = new LinkedList<Byte>();
+		int in;
+		
+		if(expectedResponseBytesCount > 0){
+			LOGGER.debug("listening for reply from remote board, waiting on [{}] number of bytes", expectedResponseBytesCount);
+			
+			//read one byte at a time from the remote board until the expected number of response bytes have 
+			//been read or the end of the input stream is reached
+			while(receivedBytes.size() < expectedResponseBytesCount && (in = inStream.read()) != -1){
+				LOGGER.debug("received byte [{}]", in);
+				receivedBytes.add(Byte.valueOf((byte)in));
+			}
+			
+			LOGGER.debug("received [{}] bytes: {}", receivedBytes.size(), receivedBytes);
+			
+			if(!Integer.valueOf(receivedBytes.size()).equals(expectedResponseBytesCount)){
+				//the number of bytes that was received does not match the number that was expected
+				throw new MissingResponseDataException(commandTO.getCommand(), receivedBytes);
+			}
+		}else{
+			LOGGER.debug("not listening for reply from remote board as [{}] response data bytes are expected", expectedResponseBytesCount);
+		}
+		
+		return receivedBytes;
 	}
 	
 }

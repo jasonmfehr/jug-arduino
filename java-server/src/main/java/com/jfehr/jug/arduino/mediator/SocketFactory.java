@@ -12,11 +12,15 @@ import org.springframework.stereotype.Component;
 public class SocketFactory {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SocketFactory.class);
+	private static final int REMOTE_BOARD_TIMEOUT = 10000; //number of milliseconds to wait for a response from the remote board
 	
 	public Socket buildSocket(String arduinoIP, Integer arduinoPort) {
 		LOGGER.debug("building new socket for remote client [{}:{}]", arduinoIP, arduinoPort);
 		try {
-			return new Socket(arduinoIP, arduinoPort);
+			Socket newSocket = new Socket(arduinoIP, arduinoPort);
+			newSocket.setSoTimeout(REMOTE_BOARD_TIMEOUT);
+			
+			return newSocket;
 		} catch (UnknownHostException e) {
 			throw new SocketInitializationException(arduinoIP, arduinoPort, e);
 		} catch (IOException e) {

@@ -72,8 +72,6 @@ public class RemoteBoardMediatorTest {
 		
 		when(mockSocketFactory.buildSocket(TEST_IP, TEST_PORT)).thenReturn(mockSocket);
 		when(mockSocket.getOutputStream()).thenReturn(mockOutputStream);
-		//when(mockSocket.getInputStream()).thenReturn(mockInputStream);
-		//when(mockInputStream.read()).thenReturn(TEST_DATA_BYTE_1.intValue(), TEST_DATA_BYTE_2.intValue(), -1);
 		
 		testTO.setRemoteIP(TEST_IP);
 		testTO.setRemotePort(TEST_PORT);
@@ -90,9 +88,6 @@ public class RemoteBoardMediatorTest {
 		assertEquals(TEST_DATA_BYTE_1.byteValue(), writtenBytesCaptor.getAllValues().get(1).byteValue());
 		assertEquals(TEST_DATA_BYTE_2.byteValue(), writtenBytesCaptor.getAllValues().get(2).byteValue());
 		
-		//assertEquals(2, actualReadBytes.size());
-		//assertEquals(TEST_DATA_BYTE_1, actualReadBytes.get(0));
-		//assertEquals(TEST_DATA_BYTE_2, actualReadBytes.get(1));
 		assertEquals(0, actualReadBytes.size());
 		
 		verify(mockSocket).close();
