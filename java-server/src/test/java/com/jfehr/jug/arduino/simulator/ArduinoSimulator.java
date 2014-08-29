@@ -7,8 +7,6 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,19 +24,9 @@ public class ArduinoSimulator extends Thread {
 	private static final int BIND_PORT = 51420;
 	
 	private final Integer listenPort;
-	private List<List<Byte>> receivedBytes;
 	
 	public ArduinoSimulator(Integer listenPort) {
-		receivedBytes = new LinkedList<List<Byte>>();
 		this.listenPort = listenPort;
-	}
-	
-	public List<List<Byte>> getReceivedBytes() {
-		return this.receivedBytes;
-	}
-	
-	public List<Byte> getReceivedBytesSingle(Integer index) {
-		return this.receivedBytes.get(index);
 	}
 	
 	@Override
