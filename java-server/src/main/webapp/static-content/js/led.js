@@ -5,7 +5,7 @@ var arduino = arduino || {};
     function setLed(index, isOn, arduinoIP, arduinoPort) {
         console.log("setting led " + index + " to value " + isOn + " on arduino with address " + arduinoIP + ":" + arduinoPort);
         $.ajax(
-            arduino.LED_AJAX_URL,
+            mod.LED_AJAX_URL,
             {
                 "data" : JSON.stringify(
                     {

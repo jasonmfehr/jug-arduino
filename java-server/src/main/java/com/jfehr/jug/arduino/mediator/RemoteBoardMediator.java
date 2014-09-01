@@ -60,10 +60,14 @@ public class RemoteBoardMediator implements IMediator {
 	private void writeCommandAndDataBytes(OutputStream outStream, RemoteBoardCommandTO command) throws IOException {
 		LOGGER.debug("writing command byte [{}]", command.getCommand().getCommandNumber());
 		outStream.write(command.getCommand().getCommandNumber().byteValue());
-		
-		for(Byte b : command.getDataBytes()){
-			LOGGER.debug("writing data byte [{}]", b);
-			outStream.write(b.byteValue());
+			
+		if(command.getCommand().getNumberOfDataBytes() > 0){
+			for(Byte b : command.getDataBytes()){
+				LOGGER.debug("writing data byte [{}]", b);
+				outStream.write(b.byteValue());
+			}
+		}else{
+			LOGGER.debug("not writing any data bytes as data byte count is {}", command.getCommand().getNumberOfDataBytes());
 		}
 	}
 	

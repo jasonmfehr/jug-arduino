@@ -3,7 +3,8 @@ package com.jfehr.jug.arduino.mediator;
 public enum RemoteBoardCommandEnum {
 
 	ECHO(Byte.valueOf((byte)0), Integer.valueOf(2), Integer.valueOf(2)),
-	SET_LED(Byte.valueOf((byte)1), Integer.valueOf(2), Integer.valueOf(0));
+	SET_LED(Byte.valueOf((byte)1), Integer.valueOf(2), Integer.valueOf(0)),
+	GET_TEMP(Byte.valueOf((byte)2), Integer.valueOf(0), Integer.valueOf(1));
 	
 	private final Byte commandNumber;
 	private final Integer numberOfDataBytes;

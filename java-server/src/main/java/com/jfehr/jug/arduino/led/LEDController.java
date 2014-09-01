@@ -23,11 +23,6 @@ public class LEDController {
 	@Autowired
 	private IMediator remoteBoardMediator;
 	
-	@RequestMapping(method=RequestMethod.GET)
-	public void doGet() {
-		LOGGER.debug("GET method executed");
-	}
-	
 	@RequestMapping(value="set-led", method=RequestMethod.POST, consumes="application/json", produces="application/json")
 	public void setLedValue(@RequestBody LEDStatus ledStatus) {
 		LOGGER.debug("setting led {} to value {} on arduino with address " + ledStatus.getArduinoIP() + ":" + ledStatus.getArduinoPort(), ledStatus.getLedNumber(), ledStatus.getLedOn());
