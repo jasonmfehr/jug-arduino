@@ -41,6 +41,7 @@
     
     <h2>Temperature Sensor</h2>
     <p>Display the current temperature that the temperature sensor attached to the Arduino is detecting.  Click the button to get a new reading in real time.</p>
+    <p>The current temperature is: <span id="currentTemp"></span> <sup>o</sup>C</p>
     <input type="button" name="temperature" id="temperature" value="Get Temperature" /> 
 </div>
 

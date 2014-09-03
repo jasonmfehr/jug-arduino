@@ -1,6 +1,15 @@
 var arduino = arduino || {};
 
 (function($, mod) {
+	function processSuccess(data) {
+		$("#currentTemp").text(data.temperatureOuputTO.temperature);
+	}
+	
+	function processError(xhr, status, error) {
+		console.log(status);
+		console.log(error);
+	}
+	
 	$("#temperature").click(function() {
 		$.ajax(
             arduino.TEMP_AJAX_URL,
@@ -12,8 +21,10 @@ var arduino = arduino || {};
                     },
                 "contentType" : "application/json",
                 "dataType" : "json",
-                "type" : "GET"
+                "type" : "GET", 
+                "success" : processSuccess,
+                "error" : processError
             }
-	        );
+        );
 	});
 })(jQuery, arduino);

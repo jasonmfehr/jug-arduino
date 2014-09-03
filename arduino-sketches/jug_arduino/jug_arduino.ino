@@ -183,7 +183,7 @@ byte readTemp() {
   Serial.print("read voltage: ");
   Serial.println(readVoltage);
   
-  //a reading of 0.005 volts indicates 0 degrees celsius
+  //a reading of 0.5 volts indicates 0 degrees celsius
   return (readVoltage - 0.5) * 100;
 }
 
