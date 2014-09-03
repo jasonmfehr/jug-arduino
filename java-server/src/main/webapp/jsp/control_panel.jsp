@@ -10,7 +10,6 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" href="${cssDir}/jquery-ui.min.css">
     <link rel="stylesheet" href="${cssDir}/jug-arduino.css">
     <title>JUG Arduino Control Panel</title>
 </head>
@@ -18,18 +17,15 @@
 <div id="mainContent" class="buffered-frame">
     <h1>Arduino Control Panel</h1>
     <p>
-        <%-- TODO: Bootstrap for alignment --%>
-        <label for="arduinoBoardIP">Arduino Board IP Address:</label>
-        <input type="text" name="arduinoBoardIP" id="arduinoBoardIP" />
+        <label for="arduinoBoardIP">Arduino Board IP Address: <input type="text" name="arduinoBoardIP" id="arduinoBoardIP" /></label>
         <br />
-        <label for="arduinoBoardPort">Arduino Board Port:</label>
-        <input type="text" name="arduinoBoardPort" id="arduinoBoardPort" />
+        <label for="arduinoBoardPort">Arduino Board Port: <input type="number" name="arduinoBoardPort" id="arduinoBoardPort" /></label>
     </p>
     
     <hr size="5" />
     
-    <h2>Light Emiting Diode (LED) Controller</h2>
-    <form>
+    <p>
+	    <h2>Light Emiting Diode (LED) Controller</h2>
 	    <fieldset>
 	        <legend>The checkboxes below each correspond to a LED on the Arduino board.  Check and uncheck them to see the LEDs light up or go dark.</legend>
 	        <c:forEach begin="0" end="3" var="ledIdx">
@@ -37,14 +33,29 @@
 	            <br />
 	        </c:forEach>
 	    </fieldset>
-    </form>
+    </p>
     
-    <h2>Temperature Sensor</h2>
-    <p>Display the current temperature that the temperature sensor attached to the Arduino is detecting.  Click the button to get a new reading in real time.</p>
-    <p>The current temperature is: <span id="currentTemp"></span> <sup>o</sup>C</p>
-    <input type="button" name="temperature" id="temperature" value="Get Temperature" /> 
+    <hr size="5" />
+    
+    <p>
+	    <h2>Temperature Sensor</h2>
+	    <p>Display the current temperature that the temperature sensor attached to the Arduino is detecting.  Click the button to get a new reading in real time.</p>
+	    <p>The current temperature is: <span id="currentTemp"></span> <sup>o</sup>C</p>
+	    <input type="button" name="temperature" id="temperature" value="Get Temperature" /> 
+    </p>
+    
+    <hr size="5" />
+    
+    <p>
+        <h2>Selectable Color LED</h2>
+        <p><label for="rgbRed">Red: <input type="range" name="rgbRed" id="rgbRed" min="0" max="255" class="rgbled" /></label></p>
+        <p><label for="rgbGreen">Green: <input type="range" name="rgbGreen" id="rgbGreen" min="0" max="255" class="rgbled" /></label></p>
+        <p><label for="rgbBlue">Blue: <input type="range" name="rgbBlue" id="rgbBlue" min="0" max="255" class="rgbled" /></label></p>
+    </p>
 </div>
 
+    <script type="text/javascript" src="${scriptDir}/jquery.min.js"></script>
+    
     <script type="text/javascript">
         var arduino = arduino || {};
         (function(mod) {
@@ -52,15 +63,9 @@
         	mod.TEMP_AJAX_URL = '${tempAjaxUrl}';
         })(arduino);
     </script>
-    <script type="text/javascript" src="${scriptDir}/jquery.min.js"></script>
-    <script type="text/javascript" src="${scriptDir}/jquery-ui.min.js"></script>
+    
     <script type="text/javascript" src="${scriptDir}/led.js"></script>
     <script type="text/javascript" src="${scriptDir}/temp.js"></script>
-    
-    <script>
-        $(function() {
-            $("#slider").slider();
-        });
-    </script>
+    <script type="text/javascript" src="${scriptDir}/color.js"></script>
 </body>
 </html>

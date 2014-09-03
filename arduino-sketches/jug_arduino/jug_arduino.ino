@@ -17,11 +17,16 @@ const byte LED_ONOFF_INDEX = 1;
 const byte LED_SET_OFF = 0;
 
 //array mapping led numbers to the pin they are on
-const byte LED_PINS[4] = {2, 3, 5, 6};
+const byte LED_PINS[4] = {6, 7, 8, 9};
 
 //analog pin to which the temperature sensor is connected
 const byte TEMP_INPUT_PIN = 0;
 const float ANALOG_STEP = 0.0049;
+
+//pin mappings for the multi-color LED
+const byte RED_PIN = 2;
+const byte GREEN_PIN = 3;
+const byte BLUE_PIN = 4;
 
 //number of miiliseconds to wait for the client to start sending bytes
 unsigned long CLIENT_TIMEOUT = 10000;
@@ -44,6 +49,7 @@ void setup() {
   Serial.println(SERVER_PORT);
   
   setupLEDs();
+  setupMultiColorLED();
 }
 
 void loop() {
@@ -164,6 +170,17 @@ byte* readDataBytes(EthernetClient* client, byte numberOfDataBytes) {
   return dataByteArray;
 }
 
+byte readTemp() {
+  //the voltage is returned as a number from 0 to 1023 with each number representing 0.0049 volts, 
+  //multiply to get the actual voltage that is read
+  float readVoltage = analogRead(TEMP_INPUT_PIN) * ANALOG_STEP;
+  Serial.print("read voltage: ");
+  Serial.println(readVoltage);
+  
+  //a reading of 0.5 volts indicates 0 degrees celsius
+  return (readVoltage - 0.5) * 100;
+}
+
 void setupLEDs() {
   //setup pins that the leds are connected to in output mode
   //and flash them briefly as a test
@@ -176,14 +193,19 @@ void setupLEDs() {
   }
 }
 
-byte readTemp() {
-  //the voltage is returned as a number from 0 to 1023 with each number representing 0.0049 volts, 
-  //multiply to get the actual voltage that is read
-  float readVoltage = analogRead(TEMP_INPUT_PIN) * ANALOG_STEP;
-  Serial.print("read voltage: ");
-  Serial.println(readVoltage);
+void setupMultiColorLED() {
+  analogWrite(RED_PIN, 0);
+  analogWrite(GREEN_PIN, 0);
+  analogWrite(BLUE_PIN, 0);
   
-  //a reading of 0.5 volts indicates 0 degrees celsius
-  return (readVoltage - 0.5) * 100;
+  flashColor(RED_PIN);
+  flashColor(GREEN_PIN);
+  flashColor(BLUE_PIN);
+}
+
+void flashColor(byte pin) {
+  analogWrite(pin, 255);
+  delay(500);
+  analogWrite(pin, 0);
 }
 
