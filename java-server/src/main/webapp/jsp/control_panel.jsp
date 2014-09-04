@@ -48,9 +48,11 @@
     
     <p>
         <h2>Selectable Color LED</h2>
-        <p><label for="rgbRed">Red: <input type="range" name="rgbRed" id="rgbRed" min="0" max="255" class="rgbled" /></label></p>
-        <p><label for="rgbGreen">Green: <input type="range" name="rgbGreen" id="rgbGreen" min="0" max="255" class="rgbled" /></label></p>
-        <p><label for="rgbBlue">Blue: <input type="range" name="rgbBlue" id="rgbBlue" min="0" max="255" class="rgbled" /></label></p>
+        <div id="colorLedValues">
+	        <p><label for="rgbRed">Red: <input type="range" name="rgbRed" id="rgbRed" min="0" max="255" /></label><span></span></p>
+	        <p><label for="rgbGreen">Green: <input type="range" name="rgbGreen" id="rgbGreen" min="0" max="255" /></label><span></span></p>
+	        <p><label for="rgbBlue">Blue: <input type="range" name="rgbBlue" id="rgbBlue" min="0" max="255" /></label><span></span></p>
+        </div>
     </p>
 </div>
 

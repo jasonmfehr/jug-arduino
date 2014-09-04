@@ -2,33 +2,41 @@ var arduino = arduino || {};
 
 (function($, mod) {
     
-    function updateLedColor() {
-    	console.log("Setting LED color to: " + $("#rgbRed").val() + "," + $("#rgbGreen").val() + "," + $("#rgbBlue").val());
-    	/*
+    function updateLedColor(arduinoIP, arduinoPort, redValue, greenValue, blueValue) {
+    	console.log("Setting LED color to: " + redValue + "," + greenValue + "," + blueValue);
         $.ajax(
-            mod.LED_AJAX_URL,
+            "colorled/set-color",
             {
                 "data" : JSON.stringify(
                     {
-                        "ledNumber" : index,
-                        "ledOn" : isOn, 
                         "arduinoIP" : arduinoIP,
-                        "arduinoPort" : arduinoPort
+                        "arduinoPort" : arduinoPort,
+                        "red" : redValue,
+                        "green" : greenValue,
+                        "blue" : blueValue
                     }),
                 "contentType" : "application/json",
                 "dataType" : "json",
                 "type" : "POST"
             }
         );
-        */
     }
 
     function init() {
-	    $(".rgbled").change(function() {
-	    	updateLedColor();
-	    });
-	    
-	    updateLedColor();
+    	$("#colorLedValues input").each(function() {
+    		var $this = $(this),
+    		    $displaySpan = $($this.parent().siblings(":first(span)"));
+    		
+    		$displaySpan.text($this.val());
+    		
+    		$this.change(function() {
+    			updateLedColor($("[name=arduinoBoardIP]").val(), $("[name=arduinoBoardPort]").val(), $("#rgbRed").val(), $("#rgbGreen").val(), $("#rgbBlue").val());
+    		});
+    		
+    		$this.mousemove(function() {
+    			$displaySpan.text($this.val());
+    		});
+    	});
     }
     
     $(document).ready(function() {

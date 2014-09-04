@@ -10,6 +10,8 @@ const byte CMD_SET_LED = 1;
 const byte CMD_SET_LED_DATA_BYTE_COUNT = 2;
 const byte CMD_READ_TEMP = 2;
 const byte CMD_READ_TEMP_DATA_BYTE_COUNT = 0;
+const byte CMD_SET_COLOR_LED = 3;
+const byte CMD_SET_COLOR_LED_DATA_BYTE_COUNT = 3;
 
 //indicies of data bytes for the SET_LED command
 const byte LED_NUMBER_INDEX = 0;
@@ -27,6 +29,11 @@ const float ANALOG_STEP = 0.0049;
 const byte RED_PIN = 2;
 const byte GREEN_PIN = 3;
 const byte BLUE_PIN = 4;
+
+//mapping of colors to data byte array indicies
+const byte RED_COLOR_INDEX = 0;
+const byte GREEN_COLOR_INDEX = 1;
+const byte BLUE_COLOR_INDEX = 2;
 
 //number of miiliseconds to wait for the client to start sending bytes
 unsigned long CLIENT_TIMEOUT = 10000;
@@ -77,6 +84,9 @@ void loop() {
       case CMD_READ_TEMP:
         handleReadTempCommand(&client);
         break;
+      case CMD_SET_COLOR_LED:
+        handleSetColorLedCommand(dataBytes);
+        break;
       default:
         Serial.print("Unknown command: ");
         Serial.println(commandByte);
@@ -104,6 +114,11 @@ byte determineNumberOfDataBytes(byte commandByte){
     case CMD_READ_TEMP:
       Serial.println("command READ_TEMP");
       num = CMD_READ_TEMP_DATA_BYTE_COUNT;
+      break;
+    case CMD_SET_COLOR_LED:
+      Serial.println("command SET_COLOR_LED");
+      num = CMD_SET_COLOR_LED_DATA_BYTE_COUNT;
+      break;
     default:
       Serial.print("Unknown command: ");
       Serial.println(commandByte);
@@ -143,6 +158,19 @@ void handleReadTempCommand(EthernetClient* client) {
   Serial.println(temp);
   
   client->write(temp);
+}
+
+void handleSetColorLedCommand(byte* data) {
+  Serial.print("setting RGB LED color to ");
+  Serial.print(data[RED_COLOR_INDEX]);
+  Serial.print(",");
+  Serial.print(data[GREEN_COLOR_INDEX]);
+  Serial.print(",");
+  Serial.println(data[BLUE_COLOR_INDEX]);
+
+  analogWrite(RED_PIN, data[RED_COLOR_INDEX]);
+  analogWrite(GREEN_PIN, data[GREEN_COLOR_INDEX]);
+  analogWrite(BLUE_PIN, data[BLUE_COLOR_INDEX]);
 }
 
 byte* readDataBytes(EthernetClient* client, byte numberOfDataBytes) {
