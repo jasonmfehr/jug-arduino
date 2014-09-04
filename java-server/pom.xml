@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.jfehr.jug</groupId>
-    <artifactId>jug-arduino</artifactId>
+    <artifactId>jug-iot</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>jug-arduino</name>
+    <name>jug-iot</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
