@@ -1,7 +1,7 @@
-package com.jfehr.jug.arduino.simulator;
+package com.jfehr.jug.iot.simulator;
 
-import com.jfehr.jug.arduino.led.LEDStatus;
-import com.jfehr.jug.arduino.mediator.RemoteBoardMediator;
+import com.jfehr.jug.iot.led.LEDStatus;
+import com.jfehr.jug.iot.mediator.RemoteBoardMediator;
 
 public class ClientTester {
 
@@ -11,8 +11,8 @@ public class ClientTester {
 		
 		ledStatus.setLedNumber(1);
 		ledStatus.setLedOn(Boolean.FALSE);
-		ledStatus.setArduinoIP("127.0.0.1");
-		ledStatus.setArduinoPort(51420);
+		ledStatus.setRemoteBoardIP("127.0.0.1");
+		ledStatus.setRemoteBoardPort(51420);
 		
 		//am.setLed(ledStatus);
 	}

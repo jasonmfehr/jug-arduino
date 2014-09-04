@@ -1,18 +1,16 @@
-var arduino = arduino || {};
-
-(function($, mod) {
+(function($) {
     
-    function setLed(index, isOn, arduinoIP, arduinoPort) {
-        console.log("setting led " + index + " to value " + isOn + " on arduino with address " + arduinoIP + ":" + arduinoPort);
+    function setLed(index, isOn, remoteBoardIP, remoteBoardPort) {
+        console.log("setting led " + index + " to value " + isOn + " on remote board with address " + remoteBoardIP + ":" + remoteBoardPort);
         $.ajax(
-            mod.LED_AJAX_URL,
+            "led/set-led",
             {
                 "data" : JSON.stringify(
                     {
                         "ledNumber" : index,
                         "ledOn" : isOn, 
-                        "arduinoIP" : arduinoIP,
-                        "arduinoPort" : arduinoPort
+                        "remoteBoardIP" : remoteBoardIP,
+                        "remoteBoardPort" : remoteBoardPort
                     }),
                 "contentType" : "application/json",
                 "dataType" : "json",
@@ -25,16 +23,16 @@ var arduino = arduino || {};
 	    $('.ledCheckbox').each(function(idx) {
 	    	var $this = $(this);
 	    	$this.click(function(e) {
-	    		setLed(idx, $this.is(':checked'), $("[name=arduinoBoardIP]").val(), $("[name=arduinoBoardPort]").val());
+	    		setLed(idx, $this.is(':checked'), $("#remoteBoardIP").val(), $("#remoteBoardPort").val());
 	    	});
 	    });
 	    
-	    $("[name=arduinoBoardIP]").val("192.168.1.7");
-	    $("[name=arduinoBoardPort]").val("51420");
+	    $("#remoteBoardIP").val("192.168.1.7");
+	    $("#remoteBoardPort").val("51420");
     }
     
     $(document).ready(function() {
     	init();
     });
     
-})(jQuery, arduino);
+})(jQuery);

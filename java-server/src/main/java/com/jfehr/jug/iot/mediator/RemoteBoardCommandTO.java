@@ -1,12 +1,13 @@
-package com.jfehr.jug.arduino.mediator;
+package com.jfehr.jug.iot.mediator;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import com.jfehr.jug.iot.data.RemoteBoardInputDataTO;
+
 public class RemoteBoardCommandTO {
 
-	private String remoteIP;
-	private Integer remotePort;
+	private RemoteBoardInputDataTO inputDataTO;
 	private RemoteBoardCommandEnum command;
 	private List<Byte> dataBytes;
 	
@@ -14,24 +15,17 @@ public class RemoteBoardCommandTO {
 		dataBytes = new LinkedList<Byte>();
 	}
 	
-	public String getRemoteIP() {
-		return remoteIP;
+	public RemoteBoardInputDataTO getInputDataTO() {
+		return inputDataTO;
 	}
-	public void setRemoteIP(String remoteIP) {
-		this.remoteIP = remoteIP;
+	public void setInputDataTO(RemoteBoardInputDataTO inputDataTO) {
+		this.inputDataTO = inputDataTO;
 	}
-	
-	public Integer getRemotePort() {
-		return remotePort;
-	}
-	public void setRemotePort(Integer remotePort) {
-		this.remotePort = remotePort;
-	}
-	
+
+
 	public RemoteBoardCommandEnum getCommand() {
 		return command;
 	}
-
 	public void setCommand(RemoteBoardCommandEnum command) {
 		this.command = command;
 	}

@@ -1,4 +1,4 @@
-package com.jfehr.jug.arduino.mediator;
+package com.jfehr.jug.iot.mediator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,8 +31,8 @@ public class RemoteBoardMediator implements IMediator {
 		}
 		
 		try{
-			LOGGER.debug("attempting to open connection with remote board at address [{}:{}]", commandTO.getRemoteIP(), commandTO.getRemotePort());
-			remoteBoardSocket = socketFactory.buildSocket(commandTO.getRemoteIP(), commandTO.getRemotePort());
+			LOGGER.debug("attempting to open connection with remote board at address [{}:{}]", commandTO.getInputDataTO().getRemoteBoardIP(), commandTO.getInputDataTO().getRemoteBoardPort());
+			remoteBoardSocket = socketFactory.buildSocket(commandTO.getInputDataTO().getRemoteBoardIP(), commandTO.getInputDataTO().getRemoteBoardPort());
 			
 			this.writeCommandAndDataBytes(remoteBoardSocket.getOutputStream(), commandTO);
 			return this.readResponse(remoteBoardSocket.getInputStream(), commandTO);
@@ -48,7 +48,7 @@ public class RemoteBoardMediator implements IMediator {
 		}finally{
 			if(remoteBoardSocket != null){
 				try {
-					LOGGER.debug("close connection with remote board at address [{}:{}]", commandTO.getRemoteIP(), commandTO.getRemotePort());
+					LOGGER.debug("close connection with remote board at address [{}:{}]", commandTO.getInputDataTO().getRemoteBoardIP(), commandTO.getInputDataTO().getRemoteBoardPort());
 					remoteBoardSocket.close();
 				} catch (IOException e) {
 					LOGGER.error("error closing socket", e);

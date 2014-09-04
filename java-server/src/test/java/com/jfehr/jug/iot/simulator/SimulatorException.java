@@ -1,4 +1,4 @@
-package com.jfehr.jug.arduino.simulator;
+package com.jfehr.jug.iot.simulator;
 
 public class SimulatorException extends RuntimeException {
 

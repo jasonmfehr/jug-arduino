@@ -1,4 +1,4 @@
-package com.jfehr.jug.arduino.temperature;
+package com.jfehr.jug.iot.temperature;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.jfehr.jug.arduino.led.LEDController;
-import com.jfehr.jug.arduino.mediator.IMediator;
-import com.jfehr.jug.arduino.mediator.RemoteBoardCommandEnum;
-import com.jfehr.jug.arduino.mediator.RemoteBoardCommandTO;
+import com.jfehr.jug.iot.data.RemoteBoardInputDataTO;
+import com.jfehr.jug.iot.led.LEDController;
+import com.jfehr.jug.iot.mediator.IMediator;
+import com.jfehr.jug.iot.mediator.RemoteBoardCommandEnum;
+import com.jfehr.jug.iot.mediator.RemoteBoardCommandTO;
 
 @Controller
 @RequestMapping("/temp")
@@ -26,14 +27,18 @@ public class TemperatureController {
 	private IMediator remoteBoardMediator;
 	
 	@RequestMapping(value="read", method=RequestMethod.GET, consumes="application/json", produces="application/json")
-	public TemperatureOuputTO readTemperature(@RequestParam String arduinoIP, @RequestParam Integer arduinoPort) {
+	public TemperatureOuputTO readTemperature(@RequestParam String remoteBoardIP, @RequestParam Integer remoteBoardPort) {
 		TemperatureOuputTO output = new TemperatureOuputTO();
 		RemoteBoardCommandTO command = new RemoteBoardCommandTO();
+		RemoteBoardInputDataTO inputDataTO = new RemoteBoardInputDataTO();
 		List<Byte> response;
 		
+		inputDataTO.setRemoteBoardIP(remoteBoardIP);
+		inputDataTO.setRemoteBoardPort(remoteBoardPort);
+		
 		command.setCommand(RemoteBoardCommandEnum.GET_TEMP);
-		command.setRemoteIP(arduinoIP);
-		command.setRemotePort(arduinoPort);
+		command.setInputDataTO(inputDataTO);
+		
 		response = remoteBoardMediator.executeCommand(command);
 				
 		LOGGER.debug("response bytes length: {}", response.size());

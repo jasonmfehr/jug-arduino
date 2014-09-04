@@ -1,16 +1,14 @@
-var arduino = arduino || {};
-
-(function($, mod) {
+(function($) {
     
-    function updateLedColor(arduinoIP, arduinoPort, redValue, greenValue, blueValue) {
+    function updateLedColor(remoteBoardIP, remoteBoardPort, redValue, greenValue, blueValue) {
     	console.log("Setting LED color to: " + redValue + "," + greenValue + "," + blueValue);
         $.ajax(
             "colorled/set-color",
             {
                 "data" : JSON.stringify(
                     {
-                        "arduinoIP" : arduinoIP,
-                        "arduinoPort" : arduinoPort,
+                        "remoteBoardIP" : remoteBoardIP,
+                        "remoteBoardPort" : remoteBoardPort,
                         "red" : redValue,
                         "green" : greenValue,
                         "blue" : blueValue
@@ -30,7 +28,7 @@ var arduino = arduino || {};
     		$displaySpan.text($this.val());
     		
     		$this.change(function() {
-    			updateLedColor($("[name=arduinoBoardIP]").val(), $("[name=arduinoBoardPort]").val(), $("#rgbRed").val(), $("#rgbGreen").val(), $("#rgbBlue").val());
+    			updateLedColor($("#remoteBoardIP").val(), $("#remoteBoardPort").val(), $("#rgbRed").val(), $("#rgbGreen").val(), $("#rgbBlue").val());
     		});
     		
     		$this.mousemove(function() {
@@ -43,4 +41,4 @@ var arduino = arduino || {};
     	init();
     });
     
-})(jQuery, arduino);
+})(jQuery);

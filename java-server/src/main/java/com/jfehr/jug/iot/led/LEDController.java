@@ -1,4 +1,4 @@
-package com.jfehr.jug.arduino.led;
+package com.jfehr.jug.iot.led;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.jfehr.jug.arduino.mediator.IMediator;
-import com.jfehr.jug.arduino.mediator.RemoteBoardCommandEnum;
-import com.jfehr.jug.arduino.mediator.RemoteBoardCommandTO;
+import com.jfehr.jug.iot.mediator.IMediator;
+import com.jfehr.jug.iot.mediator.RemoteBoardCommandEnum;
+import com.jfehr.jug.iot.mediator.RemoteBoardCommandTO;
 
 @Controller
 @RequestMapping("/led")
@@ -25,12 +25,13 @@ public class LEDController {
 	
 	@RequestMapping(value="set-led", method=RequestMethod.POST, consumes="application/json", produces="application/json")
 	public void setLedValue(@RequestBody LEDStatus ledStatus) {
-		LOGGER.debug("setting led {} to value {} on arduino with address " + ledStatus.getArduinoIP() + ":" + ledStatus.getArduinoPort(), ledStatus.getLedNumber(), ledStatus.getLedOn());
+		LOGGER.debug("setting led {} to value {} on remote board with address " + ledStatus.getRemoteBoardIP() + ":" + ledStatus.getRemoteBoardPort(), ledStatus.getLedNumber(), ledStatus.getLedOn());
 		
 		RemoteBoardCommandTO commandTO = new RemoteBoardCommandTO();
-		commandTO.setRemoteIP(ledStatus.getArduinoIP());
-		commandTO.setRemotePort(ledStatus.getArduinoPort());
+		
 		commandTO.setCommand(RemoteBoardCommandEnum.SET_LED);
+		commandTO.setInputDataTO(ledStatus);
+		
 		commandTO.getDataBytes().add(Byte.valueOf(ledStatus.getLedNumber().byteValue()));
 		commandTO.getDataBytes().add(ledStatus.getLedOn() ? LED_ON : LED_OFF);
 		

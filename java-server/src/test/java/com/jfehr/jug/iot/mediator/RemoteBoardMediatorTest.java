@@ -1,4 +1,4 @@
-package com.jfehr.jug.arduino.mediator;
+package com.jfehr.jug.iot.mediator;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
@@ -18,6 +18,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.jfehr.jug.iot.data.RemoteBoardInputDataTO;
+
 @RunWith(MockitoJUnitRunner.class)
 public class RemoteBoardMediatorTest {
 
@@ -36,6 +38,7 @@ public class RemoteBoardMediatorTest {
 	@Test
 	public void testExecuteEchoCommand() throws Exception {
 		RemoteBoardCommandTO testTO = new RemoteBoardCommandTO();
+		RemoteBoardInputDataTO inputDataTO = new RemoteBoardInputDataTO();
 		List<Byte> actualReadBytes;
 		
 		when(mockSocketFactory.buildSocket(TEST_IP, TEST_PORT)).thenReturn(mockSocket);
@@ -43,9 +46,11 @@ public class RemoteBoardMediatorTest {
 		when(mockSocket.getInputStream()).thenReturn(mockInputStream);
 		when(mockInputStream.read()).thenReturn(TEST_DATA_BYTE_1.intValue(), TEST_DATA_BYTE_2.intValue(), -1);
 		
-		testTO.setRemoteIP(TEST_IP);
-		testTO.setRemotePort(TEST_PORT);
+		inputDataTO.setRemoteBoardIP(TEST_IP);
+		inputDataTO.setRemoteBoardPort(TEST_PORT);
+		
 		testTO.setCommand(RemoteBoardCommandEnum.ECHO);
+		testTO.setInputDataTO(inputDataTO);
 		testTO.getDataBytes().add(TEST_DATA_BYTE_1);
 		testTO.getDataBytes().add(TEST_DATA_BYTE_2);
 		
@@ -69,13 +74,16 @@ public class RemoteBoardMediatorTest {
 	public void testLEDStatusCommand() throws Exception {
 		RemoteBoardCommandTO testTO = new RemoteBoardCommandTO();
 		List<Byte> actualReadBytes;
+		RemoteBoardInputDataTO inputDataTO = new RemoteBoardInputDataTO();
 		
 		when(mockSocketFactory.buildSocket(TEST_IP, TEST_PORT)).thenReturn(mockSocket);
 		when(mockSocket.getOutputStream()).thenReturn(mockOutputStream);
 		
-		testTO.setRemoteIP(TEST_IP);
-		testTO.setRemotePort(TEST_PORT);
+		inputDataTO.setRemoteBoardIP(TEST_IP);
+		inputDataTO.setRemoteBoardPort(TEST_PORT);
+		
 		testTO.setCommand(RemoteBoardCommandEnum.SET_LED);
+		testTO.setInputDataTO(inputDataTO);
 		testTO.getDataBytes().add(TEST_DATA_BYTE_1);
 		testTO.getDataBytes().add(TEST_DATA_BYTE_2);
 		

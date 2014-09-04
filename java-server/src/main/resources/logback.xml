@@ -7,7 +7,7 @@
         </encoder>
     </appender>
     
-    <logger name="com.jfehr.jug.arduino" level="DEBUG" />
+    <logger name="com.jfehr.jug.iot" level="DEBUG" />
     
     <logger name="org.springframework" level="WARN" />
     

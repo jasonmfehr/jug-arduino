@@ -1,4 +1,4 @@
-package com.jfehr.jug.arduino.temperature;
+package com.jfehr.jug.iot.temperature;
 
 public class TemperatureOuputTO {
 

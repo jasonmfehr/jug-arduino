@@ -1,6 +1,4 @@
-var arduino = arduino || {};
-
-(function($, mod) {
+(function($) {
 	function processSuccess(data) {
 		$("#currentTemp").text(data.temperatureOuputTO.temperature);
 	}
@@ -12,12 +10,12 @@ var arduino = arduino || {};
 	
 	$("#temperature").click(function() {
 		$.ajax(
-            arduino.TEMP_AJAX_URL,
+            "temp/read",
             {
                 "data" : 
                     {
-                        "arduinoIP" : $("[name=arduinoBoardIP]").val(),
-                        "arduinoPort" : $("[name=arduinoBoardPort]").val()
+                        "remoteBoardIP" : $("#remoteBoardIP").val(),
+                        "remoteBoardPort" : $("#remoteBoardPort").val()
                     },
                 "contentType" : "application/json",
                 "dataType" : "json",
@@ -27,4 +25,4 @@ var arduino = arduino || {};
             }
         );
 	});
-})(jQuery, arduino);
+})(jQuery);

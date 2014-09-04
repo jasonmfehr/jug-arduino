@@ -1,4 +1,4 @@
-package com.jfehr.jug.arduino.configuration;
+package com.jfehr.jug.iot.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages="com.jfehr.jug.arduino")
+@ComponentScan(basePackages="com.jfehr.jug.iot")
 public class DispatcherServletConfiguration extends WebMvcConfigurerAdapter {
 
 	@Override
@@ -33,7 +33,6 @@ public class DispatcherServletConfiguration extends WebMvcConfigurerAdapter {
 	@Override
 	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
 		configurer.defaultContentType(MediaType.TEXT_HTML);
-		//configurer.ignoreAcceptHeader(true);
 		configurer.mediaType("json", MediaType.APPLICATION_JSON);
 	}
 

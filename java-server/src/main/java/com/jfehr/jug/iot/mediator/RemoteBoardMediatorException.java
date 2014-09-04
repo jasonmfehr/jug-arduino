@@ -1,4 +1,4 @@
-package com.jfehr.jug.arduino.mediator;
+package com.jfehr.jug.iot.mediator;
 
 public class RemoteBoardMediatorException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package com.jfehr.jug.arduino.color;
+package com.jfehr.jug.iot.color;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.jfehr.jug.arduino.mediator.IMediator;
-import com.jfehr.jug.arduino.mediator.RemoteBoardCommandEnum;
-import com.jfehr.jug.arduino.mediator.RemoteBoardCommandTO;
+import com.jfehr.jug.iot.mediator.IMediator;
+import com.jfehr.jug.iot.mediator.RemoteBoardCommandEnum;
+import com.jfehr.jug.iot.mediator.RemoteBoardCommandTO;
 
 @Controller
 @RequestMapping("/colorled")
@@ -28,8 +28,7 @@ public class ColorLedController {
 		RemoteBoardCommandTO commandTO = new RemoteBoardCommandTO();
 		
 		commandTO.setCommand(RemoteBoardCommandEnum.SET_COLOR_LED);
-		commandTO.setRemoteIP(colorTO.getArduinoIP());
-		commandTO.setRemotePort(colorTO.getArduinoPort());
+		commandTO.setInputDataTO(colorTO);
 		
 		commandTO.getDataBytes().add(Byte.valueOf(colorTO.getRed().byteValue()));
 		commandTO.getDataBytes().add(Byte.valueOf(colorTO.getGreen().byteValue()));

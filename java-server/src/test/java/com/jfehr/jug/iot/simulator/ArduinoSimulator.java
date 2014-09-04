@@ -1,4 +1,4 @@
-package com.jfehr.jug.arduino.simulator;
+package com.jfehr.jug.iot.simulator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +11,7 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jfehr.jug.arduino.mediator.RemoteBoardCommandEnum;
+import com.jfehr.jug.iot.mediator.RemoteBoardCommandEnum;
 
 /**
  * This class was originally intended to be a stand-in for a remote arduino board during integration testing.  However, 
