@@ -132,16 +132,19 @@ byte determineNumberOfDataBytes(byte commandByte){
   return num;
 }
 
-void handleSetLedCommand(byte* data) {  
+void handleSetLedCommand(byte* data) {
+  byte ledNumber = data[LED_NUMBER_INDEX];
+  byte ledOnOrOff = data[LED_ONOFF_INDEX];
+  
   Serial.print("setting led ");
   Serial.print(data[LED_NUMBER_INDEX]);
   Serial.print(" to value ");
   Serial.println(data[LED_ONOFF_INDEX]);
   
-  if(data[LED_ONOFF_INDEX] == LED_SET_OFF){
-    digitalWrite(LED_PINS[data[LED_NUMBER_INDEX]], LOW);
+  if(ledOnOrOff == LED_SET_OFF){
+    digitalWrite(LED_PINS[ledNumber], LOW);
   }else{
-    digitalWrite(LED_PINS[data[LED_NUMBER_INDEX]], HIGH);
+    digitalWrite(LED_PINS[ledNumber], HIGH);
   }
 }
 
