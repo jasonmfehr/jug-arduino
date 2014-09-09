@@ -1,6 +1,7 @@
 #include <SPI.h>
 #include <Ethernet.h>
 
+//TCP port the arduino will listen on for incoming connections
 const unsigned int SERVER_PORT = 51420;
 
 //constants for command numbers which are sent as the first byte
@@ -21,19 +22,21 @@ const byte COMMAND_TO_DATA_BYTE_COUNT_MAP[4] = {CMD_ECHO_DATA_BYTE_COUNT, CMD_SE
 //indicies of data bytes for the SET_LED command
 const byte LED_NUMBER_INDEX = 0;
 const byte LED_ONOFF_INDEX = 1;
+
+//if the LED_ONOFF_INDEX data byte for the SET_LED command is this value, it means to turn off the LED
 const byte LED_SET_OFF = 0;
 
 //array mapping led numbers to the I/O pin they are on
-const byte LED_PINS[4] = {6, 7, 8, 9};
+const byte LED_PINS[4] = {2, 7, 8, 9};
 
 //analog pin to which the temperature sensor is connected
 const byte TEMP_INPUT_PIN = 0;
 const float ANALOG_STEP = 0.0049;
 
 //pin mappings for the PWM output pins that drive the multi-color LED
-const byte RED_PIN = 2;
-const byte GREEN_PIN = 3;
-const byte BLUE_PIN = 4;
+const byte RED_PIN = 3;
+const byte GREEN_PIN = 5;
+const byte BLUE_PIN = 6;
 
 //mapping of colors to data byte array indicies
 const byte RED_COLOR_INDEX = 0;
@@ -66,15 +69,18 @@ void setup() {
 }
 
 void loop() {
-  EthernetClient client = server.available();
+  EthernetClient client;
   byte commandByte;
   byte* dataBytes;
   byte dataBytesCount;
   
+  //server.available() is not a blocking call, so we must check to see if a client has connected
+  //but, client will be false until at least one byte is available for reading, thus the first 
+  //client.read() command is guaranteed to return the first byte that was sent by the client
+  client = server.available();
   if(client){
     Serial.println("\nclient connected");
     
-    //wait for the command byte to come in
     commandByte = client.read();
     Serial.print("got command byte: ");
     Serial.println(commandByte);

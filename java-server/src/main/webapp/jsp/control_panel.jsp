@@ -23,7 +23,7 @@
     <hr size="5" />
     
     <p>
-	    <h2>Light Emiting Diode (LED) Controller</h2>
+	    <h2>Light Emitting Diode (LED) Controller</h2>
 	    <fieldset>
 	        <legend>The checkboxes below each correspond to a LED on the remote board.  Check and uncheck them to see the LEDs light up or go dark.</legend>
 	        <c:forEach begin="0" end="3" var="ledIdx">
